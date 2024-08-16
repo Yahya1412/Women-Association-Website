@@ -1,0 +1,93 @@
+{% extends "shop/base.html" %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire Bootstrap</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            width: 18rem;
+            margin-bottom: 20px;
+        }
+
+        .fill-form-btn {
+            display: block;
+            width: 150px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 10px;
+            background-color: #458988;
+            color: #fff;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .fill-form-btn:hover {
+            background-color: #4a7684;
+        }
+    </style>
+</head>
+<body>
+
+   
+    {% include 'Shop/_messages.html' %}
+    <!-- Services Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row text-center">
+                {% for i in event %}
+                <div class="col-sm-6 col-md-4">
+                    <div class="card bg-dark text-light">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ i.nomeven }}</h5>
+                            <p class="card-text">{{ i.localisation }}</p>
+                            <p class="card-text">{{ i.date }}</p>
+                            <a href="{% url 'participer' %}" class="btn btn-primary">Remplir Formulaire</a>
+                        </div>
+                    </div>
+                </div>
+                {% if forloop.counter == 6 %}
+                </div>
+            </div>
+        </section>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <li class="page-item {% if not off.has_previous %}disabled{% endif %}">
+                    <a class="page-link" href="?page={{ off.previous_page_number }}">Previous</a>
+                </li>
+                <li class="page-item {% if not off.has_next %}disabled{% endif %}">
+                    <a class="page-link" href="?page={{ off.next_page_number }}">Next</a>
+                </li>
+            </ul>
+        </nav>
+        <section class="py-5">
+            <div class="container">
+                <div class="row text-center">
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    </div>
+    </div>
+    </section>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+{% endblock %}

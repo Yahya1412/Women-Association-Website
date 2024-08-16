@@ -1,0 +1,109 @@
+{% extends 'shop/base.html' %} {% block content %}
+<head>
+  <style>
+    .form-group input, select {
+      background-color: lightgrey;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      padding: 5px;
+    }
+    .btn-submit {
+      display: inline-block;
+      background-color: #00BFFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+      box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+  
+    .btn-submit:hover {
+      background-color: #00C853;
+      box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
+    }
+    #etatFieldField {
+      background-color: #f2f2f2;
+      border-radius: 10px;
+      padding: 10px;
+    }
+    #etatFieldField option {
+      background-color: white;
+      color: black;
+    }
+   
+  </style>
+</head>
+
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-body">
+      <form action="{% url 'participer' %}" method="post">
+        {% include 'shop/_messages.html'%} 
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="">Nom</label>
+          <input 
+            type="text" 
+            name="nom" 
+            placeholder="Nom"
+            id="nomField" 
+            class="form-control form-control-sm"
+            value="{{values.nom}}"/>
+        </div>
+        <div class="form-group">
+          <label for="">Prénom</label>
+          <input 
+            type="text" 
+            name="prenom" 
+            placeholder="Prénom"
+            id="dsecriptionField"  
+            class="form-control form-control-sm"
+            value="{{values.prenom}}"/>
+        </div>
+        <div class="form-group col-md-4">
+            <label for="inputState">Sexe Du Participant</label>
+            <select id="sexeField" name="sexe" class="form-control">
+              <option selected>Homme</option>
+              <option>Femme</option>
+            </select>
+          </div>
+        <div class="form-group">
+            <label for="">Profession</label>
+            <input 
+              type="text" 
+              name="profession" 
+              placeholder="Profession"
+              id="date_debutField"  
+              class="form-control form-control-sm"
+              value="{{values.profession}}"/>
+          </div>
+          <div class="form-group">
+            <label for="">Date Naissance du Participant</label>
+            <input 
+              type="date" 
+              name="date_naissance" 
+              placeholder="Date Naissance"
+              id="date_finField"  
+              class="form-control form-control-sm"
+              value="{{values.date_naissance}}"/>
+          </div>
+        <div class="ui inverted segment">
+          <button
+            type="submit"
+            class="ui inverted green basic button btn-submit"
+          >
+            Submit
+          </button>
+        </div>
+      </form>
+      <br><br>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}
+

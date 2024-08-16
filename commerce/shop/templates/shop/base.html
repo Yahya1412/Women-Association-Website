@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AFOD</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <style>
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 10px;
+        }
+        .navbar a, .navbar .btn {
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+        .navbar a:hover, .navbar .btn:hover {
+            background-color: #ddd;
+            color: black;
+        }
+        .navbar-brand {
+            color: #f2f2f2;
+        }
+        .navbar-toggler {
+            border-color: #f2f2f2;
+        }
+        .navbar-toggler-icon {
+            color: #f2f2f2;
+        }
+        .navbar-collapse {
+            display: flex;
+            justify-content: space-between;
+        }
+        .navbar-nav {
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <a class="navbar-brand" href="{% url 'home' %}">AFOD Mahdia</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'blog' %}">Blogs</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'products' %}">Produits <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'checkout' %}">
+                    <button id="panier" type="button" class="btn btn-secondary" data-html="true" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">
+                        Panier(0)
+                    </button></a>
+                </li>
+                <li class="nav-item">
+                    {% if user.is_authenticated %}
+                        <a class="nav-link" href="{% url 'stats' %}">Dashboards</a>
+                    {% else %}
+                        <a class="nav-link" href="{% url 'login' %}">Dashboards</a>
+                    {% endif %}
+                </li>
+                
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                {% if user.is_authenticated %}
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">Se Déconnecter</a>
+                  </li>
+                {% endif %}
+              </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>
+
+</body>
+<footer>
+  <div class="contact">
+      <h2>Contactez-Nous</h2>
+      <p>Numéro de téléphone : +123456789</p>
+      <p>Adresse : Mahdia, Tunisie</p>
+      <p>Suivez-nous sur les réseaux sociaux :</p>
+      <a href="https://www.facebook.com/"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Facebook_f_logo_%282019%29.svg/1200px-Facebook_f_logo_%282019%29.svg.png" alt="Facebook"></a>
+      <a href="https://www.instagram.com/"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Instagram_icon.png/1200px-Instagram_icon.png" alt="Instagram"></a>
+  </div>
+</footer>
+{% block js %}{% endblock %}
+</html>
+<style>
+  footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0; /* Modification de la hauteur ici */
+    width: 100%;
+}
+
+footer .contact {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+footer .contact h2 {
+    border-bottom: 2px solid #fff;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+}
+
+footer .contact p {
+    margin-bottom: 10px;
+}
+
+footer .contact a img {
+    margin-right: 10px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+</style>

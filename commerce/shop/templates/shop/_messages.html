@@ -1,0 +1,17 @@
+{% if messages %}
+<div class="messages">
+  {% for message in messages %}
+  <div{% if message.tags %} class="alert alert-sm alert-{{ message.tags }}"{% else %} class="alert alert-sm"{% endif %} style="border-radius: 10px; background-color: #f1f1f1; padding: 10px; margin-bottom: 10px; animation: blink 1s infinite;">
+    {{ message }}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<style>
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+</style>

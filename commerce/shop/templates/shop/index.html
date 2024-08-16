@@ -1,0 +1,191 @@
+{% extends "shop/base.html" %}
+
+{% block content %}
+
+<style>
+    .product-image {
+        width: 200px;
+        height: 200px;
+        object-fit: cover; /* Cela permettra de redimensionner l'image pour qu'elle s'adapte à la taille spécifiée sans déformer l'image */
+    }
+    /* Personnalisation du style de la carte des produits */
+.card {
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Style pour le titre du produit */
+.card-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Style pour le bouton "Voir" */
+.btn-warning {
+    background-color: #ffc107;
+    border-color: #ffc107;
+    color: #212529;
+    transition: all 0.3s ease;
+}
+
+.btn-warning:hover {
+    background-color: #ffca28;
+    border-color: #ffca28;
+}
+
+/* Style pour le bouton "Ajouter" */
+.ted {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: #fff;
+    transition: all 0.3s ease;
+}
+
+.ted:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+
+/* Style pour la pagination */
+.pagination {
+    justify-content: center;
+}
+
+.page-link {
+    color: #007bff;
+    border-color: #007bff;
+}
+
+.page-item.active .page-link {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.page-link:hover {
+    color: #0056b3;
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
+
+</style>
+<br>
+<div class="row">
+    <div class="col-md-12">
+        <form class="card card-sm">
+            <div class="card-body row no-gutters align-items-center">
+                <div class="col">
+                    <input type="search" placeholder="Entrez le nom du produit que vous cherchez" name="item-name" class="form-control form-control-borderless">
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-success">Recherche</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    {% for product in product_object %}
+    <div class="col-md-3">
+        <div class="card">
+            <img src="{{ product.image }}" alt="" class="card-img-top product-image">
+
+            <div class="card-body">
+                <div id="aa{{ product.id }}" class="card-title">{{ product.title }}</div>
+                <div id="price{{ product.id }}" style="color:orange" class="card-text"> {{ product.price }}</div>
+                <a href="{{ product.id }}" class="btn btn-warning">Voir</a>
+                <button id="{{ product.id }}" class="btn ted btn-success">Ajouter</button>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="row mt-3">
+    <div class="col-md-3 offset-md-4">
+        <ul class="pagination">
+            {% if product_object.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ product_object.previous_page_number }}">Précédent</a>
+                </li>
+            {% endif %}
+
+            <li class="page-item active">
+                <a class="page-link" href="?page={{ product_object.number }}">{{ product_object.number }}</a>
+            </li>
+
+            {% if product_object.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ product_object.next_page_number }}">Suivant</a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+    console.log('Juste pour tester ');
+    if (localStorage.getItem('panier') == null) {
+        var panier = {};
+    } else {
+        panier = JSON.parse(localStorage.getItem('panier'));
+    }
+    $(document).on('click', '.ted', function() {
+        console.log('ajouter');
+        var item_id = this.id.toString();
+        console.log(item_id);
+        if (panier[item_id] != undefined) {
+            quantite = panier[item_id][0] + 1;
+            panier[item_id][0] = quantite;
+            panier[item_id][2] += parseFloat(document.getElementById("price" + item_id).innerHTML);
+        } else {
+            quantite = 1;
+            prix = parseFloat(document.getElementById("price" + item_id).innerHTML);
+            nom = document.getElementById("aa" + item_id).innerHTML;
+            panier[item_id] = [quantite, nom, prix];
+        }
+        console.log(panier);
+        localStorage.setItem('panier', JSON.stringify(panier));
+        document.getElementById("panier").innerHTML = "Panier(" + Object.keys(panier).length + ")";
+        AfficherList(panier); // Mettre à jour la liste après ajout
+    });
+
+    function AfficherList(panier) {
+        var panierString = "";
+        panierString += "<h5>Voici votre liste</h5>";
+        var index = 1;
+        for (var x in panier) {
+            panierString += "<div>";
+            panierString += index + ". ";
+            panierString += document.getElementById("aa" + x).innerHTML + " Qte: " + panier[x][0] + " ";
+            panierString += "<button class='btn retirer' data-id='" + x + "'>Retirer</button>";
+            panierString += "</div>";
+            index += 1;
+        }
+        panierString += "<a href='/checkout' class='btn btn-primary'>Checkout</a>";
+        $('[data-toggle="popover"]').popover();
+        document.getElementById('panier').setAttribute('data-content', panierString);
+    }
+
+    $(document).on('click', '.retirer', function() {
+        var item_id = $(this).data('id').toString();
+        console.log('retirer', item_id);
+        delete panier[item_id];
+        localStorage.setItem('panier', JSON.stringify(panier));
+        document.getElementById("panier").innerHTML = "Panier(" + Object.keys(panier).length + ")";
+        AfficherList(panier); // Mettre à jour la liste après retrait
+    });
+
+    AfficherList(panier); // Afficher la liste au chargement de la page
+</script>
+{% endblock %}
